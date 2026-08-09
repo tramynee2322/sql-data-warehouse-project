@@ -17,7 +17,7 @@ USE master;
 GO
 
 -- Drop and recreate the 'DataWarehouse' database
-IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'DataWarehouse')
+IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'Datawarehouse')
 BEGIN
     ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
     DROP DATABASE DataWarehouse;
@@ -28,12 +28,30 @@ GO
 CREATE DATABASE DataWarehouse;
 GO
 
-USE DataWarehouse;
+-- Create schema, option 1
+IF NOT EXISTS (
+    SELECT 1 
+    FROM INFORMATION_SCHEMA.SCHEMATA 
+    WHERE SCHEMA_NAME in ('brz', 'sil','gld')
+)
+BEGIN
+    EXEC('CREATE SCHEMA brz');
+    EXEC('CREATE SCHEMA sil');
+    EXEC('CREATE SCHEMA gld');
+END;
+
+-- Create schema, option 2
+USE Datawarehouse;
 GO
 
--- Create Schemas
-CREATE SCHEMA bronze;
-GO
+IF SCHEMA_ID('brz') IS NULL
+    EXEC('CREATE SCHEMA brz');
+
+IF SCHEMA_ID('sil') IS NULL
+    EXEC('CREATE SCHEMA sil');
+
+IF SCHEMA_ID('gld') IS NULL
+    EXEC('CREATE SCHEMA gld');
 
 CREATE SCHEMA silver;
 GO
