@@ -52,9 +52,3 @@ IF SCHEMA_ID('sil') IS NULL
 
 IF SCHEMA_ID('gld') IS NULL
     EXEC('CREATE SCHEMA gld');
-
-CREATE SCHEMA silver;
-GO
-
-CREATE SCHEMA gold;
-GO
